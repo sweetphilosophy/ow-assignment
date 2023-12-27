@@ -5,7 +5,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-  private readonly groups: Array<string> = ['GROUP_1', 'GROUP_2'];
+  private readonly groups: Array<string> = ['GROUP_1', 'GROUP_2', 'GROUP_3'];
 
   private readonly permissions: Array<string> = [
     'CREATE',
@@ -24,6 +24,7 @@ export class UsersService {
         this.permissions[2],
         this.permissions[3],
       ],
+      inheritGroups: ['GROUP_3'],
     },
 
     { name: 'Personal', code: 'PERSONAL', permissions: [] },
@@ -41,7 +42,7 @@ export class UsersService {
 
     {
       id: 2,
-      name: 'Grabriel Monroe',
+      name: 'Gabriel Monroe',
       roles: [this.roles[1]],
       groups: [this.groups[0], this.groups[1]],
     },
@@ -57,7 +58,7 @@ export class UsersService {
       id: 4,
       name: 'Jarvis Khan',
       roles: [this.roles[0], this.roles[1]],
-      groups: [this.groups[1]],
+      groups: [this.groups[1], this.groups[2]],
     },
 
     {
@@ -128,7 +129,11 @@ export class UsersService {
     return this.users.filter(
       (user) =>
         user.id !== managerId &&
-        user.groups.some((group) => manager.groups.includes(group)),
+        user.groups.some(
+          (group) =>
+            manager.groups.includes(group) ||
+            this.roles[0].inheritGroups.includes(group),
+        ),
     );
   }
 

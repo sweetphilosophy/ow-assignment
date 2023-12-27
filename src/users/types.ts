@@ -14,4 +14,5 @@ export interface Role {
   name: string;
   code: string;
   permissions: Array<string>;
+  inheritGroups?: Array<string>;
 }
